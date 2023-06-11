@@ -1,102 +1,94 @@
-import unittest
 from selenium import webdriver
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from Sprint_4.locators.rental_page_locators import RentalPageLocators
+
+from Sprint_4.pages.base_page import BasePage
 
 
-class RentalFormTest(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.driver.maximize_window()
-        self.driver.get("https://qa-scooter.praktikum-services.ru/")
+class RentPage(BasePage):
+    def name_field(self):
+        return self.browser.find_element(*RentalPageLocators.INPUT_NAME_REGISTER_FORM)
 
-    def tearDown(self):
-        self.driver.quit()
+    def last_name_field(self):
+        return self.browser.find_element(*RentalPageLocators.LAST_NAME_NAME_REGISTER_FORM)
 
-    def test_rental_form(self):
-        # Подтверждение использования куки
-        cookie_confirm_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(MainPageLocators.COOKIE_CONFIRM_BUTTON))
-        cookie_confirm_button.click()
+    def fill_user_data_from(self, family_name):
+        self.name_field().send_keys(family_name)
 
-        # Нажатие кнопки "Заказать" в шапке сайта
-        header_order_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(MainPageLocators.HEADER_ORDER_BUTTON))
-        header_order_button.click()
+    def address_field(self):
+        return self.browser.find_element(*RentalPageLocators.INPUT_ADDRESS_REGISTER_FORM)
 
-        # Заполнение полей формы "Для кого самокат"
-        input_name = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(RegistrationPageLocators.INPUT_NAME_REGISTER_FORM))
-        input_name.send_keys("Винсент")
+    def subway_input(self):
+        return self.browser.find_element(*RentalPageLocators.SUBWAY_INPUT)
 
-        input_family_name = self.driver.find_element(*RegistrationPageLocators.INPUT_FAMILY_NAME_REGISTER_FORM)
-        input_family_name.send_keys("Вангог")
+    def phone_field(self):
+        return self.browser.find_element(*RentalPageLocators.INPUT_PHONE_NUMBER_REGISTER_FORM)
 
-        input_address = self.driver.find_element(*RegistrationPageLocators.INPUT_ADDRESS_REGISTER_FORM)
-        input_address.send_keys("Лубянский проезд 15")
+    def next_button_rental_page(self):
+        return self.browser.find_element(*RentalPageLocators.BUTTON_NEXT_REGISTER_FORM)
 
-        input_metro_station = self.driver.find_element(*RegistrationPageLocators.INPUT_METRO_ST_LIST_REGISTER_FORM)
-        input_metro_station.click()
+    def subway_station_item(self):
+        return self.browser.find_element(*RentalPageLocators.SUBWAY_STATION_ITEM)
 
-        list_of_metro_stations = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(RegistrationPageLocators.LIST_OF_METRO_STATIONS_REGISTER_FORM))
-        metro_station_option = list_of_metro_stations.find_element(By.XPATH, , 'Бульвар Рокоссовского')]")
-        metro_station_option.click()
+    def subway_field(self):
+        return self.browser.find_element(*RentalPageLocators.SUBWAY_FIELD)
 
-        input_phone_number = self.driver.find_element(*RegistrationPageLocators.INPUT_PHONE_NUMBER_REGISTER_FORM)
-        input_phone_number.send_keys("+79991234567")
+    def date_input(self):
+        return self.browser.find_element(*RentalPageLocators.INPUT_DELIVERY_DATE_RENT_FORM)
 
-        # Нажатие кнопки "Далее"
-        button_next = self.driver.find_element(*RegistrationPageLocators.BUTTON_NEXT_REGISTER_FORM)
-        button_next.click()
+    def rental_period_item(self):
+        return self.browser.find_elements(*RentalPageLocators.RENTAL_PERIOD_ITEM)
 
-        # Заполнение полей формы "Про аренду"
-        input_delivery_date = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(RentalPageLocators.INPUT_DELIVERY_DATE_RENT_FORM))
-        input_delivery_date.click()
+    def rental_period_arrow_btn(self):
+        return self.browser.find_element(*RentalPageLocators.RENTAL_PERIOD_ARROW_BTN)
 
-        # Выбор даты доставки (в данном случае выбрана дата следующего месяца)
-        change_month_button = self.driver.find_element(*RentalPageLocators.CHANGE_MONTH_BUTTON)
-        change_month_button.click()
+    def check_box_color(self):
+        return self.browser.find_element(*RentalPageLocators.CHECKBOX_BLACK_COLOR_RENT_FORM)
 
-        choose_delivery_date_next_month = self.driver.find_element(
-            *RentalPageLocators.CHOOSE_DELIVERY_DATE_NEXT_MONTH_RENT_FORM)
-        choose_delivery_date_next_month.click()
+    def rent_order_btn(self):
+        return self.browser.find_element(*RentalPageLocators.RENT_ORDER_BUTTON)
 
-        # Выбор длительности аренды (в данном случае выбрана длительность на 7 дней)
-        choose_arrow_duration = self.driver.find_element(*RentalPageLocators.CHOOSE_ARROW_DURATION_RENT_FORM)
-        choose_arrow_duration.click()
+    def yes_confirm_btn(self):
+        return self.browser.find_element(*RentalPageLocators.YES_BUTTON_CONFIRM_ORDER_WINDOW)
 
-        choose_duration_7days = self.driver.find_element(*RentalPageLocators.CHOOSE_DURATION_7DAYS_RENT_FORM)
-        choose_duration_7days.click()
+    def order_finish_text(self):
+        return self.browser.find_element(*RentalPageLocators.FINISH_ORDER_MODAL)
 
-        # Выбор цвета самоката
-        checkbox_black_color = self.driver.find_element(*RentalPageLocators.CHECKBOX_BLACK_COLOR_RENT_FORM)
-        checkbox_black_color.click()
+    def watch_status_btn(self):
+        return self.browser.find_element(*RentalPageLocators.BUTTON_CHECK_STATUS_POPUP_INFO_WINDOW)
 
-        # Заполнение комментария для курьера
-        input_comment = self.driver.find_element(*RentalPageLocators.INPUT_COMMENT_RENT_FORM)
-        input_comment.send_keys("Please deliver to the front door.")
+    def fill_user_data_form(self, name, last_name, address, subway_station="Черкизовская", phone="+89991234567"):
+        self.name_field().send_keys(name)
+        self.last_name_field().send_keys(last_name)
+        self.address_field().send_keys(address)
+        self.subway_input().click()
+        self.subway_field().send_keys(subway_station)
+        self.subway_field().send_keys(Keys.ARROW_DOWN)
+        self.subway_field().send_keys(Keys.ENTER)
+        self.phone_field().send_keys(phone)
+        self.next_button_rental_page().click()
 
-        # Нажатие кнопки "Заказать"
-        rent_form_order_button = self.driver.find_element(*RentalPageLocators.RENT_FORM_ORDER_BUTTON)
-        rent_form_order_button.click()
+    def fill_ditail_form(self, period):
+        self.date_input().click()
+        self.date_input().send_keys(Keys.ARROW_RIGHT)
+        self.date_input().send_keys(Keys.ENTER)
+        self.rental_period_arrow_btn().click()
+        self.click_item_in_list(self.rental_period_item(), period)
+        self.check_box_color().click()
+        self.rent_order_btn().click()
+        self.yes_confirm_btn().click()
 
-        # Проверка всплывающего окна подтверждения заказа
-        popup_confirm_window = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(RentalPageLocators.POP_UP_CONFIRM_WINDOW))
+    def check_order_finish_text(self):
+        assert "Заказ оформлен" in self.order_finish_text().text
 
-        # Подтверждение заказа
-        yes_button_confirm_order_window = self.driver.find_element(
-            *RentalPageLocators.YES_BUTTON_CONFIRM_ORDER_WINDOW)
-        yes_button_confirm_order_window.click()
-
-        # Проверка всплывающего окна "Заказ оформлен"
-        popup_info_order_confirmed_window = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(RentalPageLocators.POP_UP_INFO_ORDER_CONFIRMED_WINDOW))
-
-        # Проверка наличия кнопки "Посмотреть статус"
-        button_check_status = self.driver.find_element(*RentalPageLocators.BUTTON_CHECK_STATUS_POPUP_INFO_WINDOW)
-        self.assertTrue(button_check_status.is_displayed())
+    def click_watch_status_btn(self):
+        self.watch_status_btn().click()
 
 
-if __name__ == "__main__":
-    unittest.main()
+
+
+
+
