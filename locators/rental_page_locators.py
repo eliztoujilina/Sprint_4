@@ -19,7 +19,7 @@ class RentalPageLocators:
     SUBWAY_INPUT = [By.XPATH, "//div[@class='select-search']"]  # поле выбора станции метро
     INPUT_PHONE_NUMBER_REGISTER_FORM = [By.XPATH, "//input[@placeholder='* Телефон: на него позвонит курьер']"]  # поле ввода телефона
     BUTTON_NEXT_REGISTER_FORM = [By.XPATH, "//button[contains(text(), 'Далее')]"]  # кнопка "Далее" под формой регистрации
-    SUBWAY_STATION_ITEM = (By.XPATH, "//input[@class='select-search__select']")
-    SUBWAY_FIELD = (By.XPATH, "//input[@class='select-search__input']")
-    RENTAL_PERIOD_ITEM = (By.XPATH, "//div[@class='Dropdown-option']")
-    FINISH_ORDER_MODAL = (By.XPATH, "//div[@class='Order_ModalHeader__3FDaJ']")
+    SUBWAY_STATION_ITEM = (By.XPATH, "//input[@class='select-search__select']") # поле метро
+    SUBWAY_FIELD = (By.XPATH, "//input[@class='select-search__input']")  # список станций метро
+    RENTAL_PERIOD_ITEM = (By.XPATH, "//div[@class='Dropdown-option']") # срок аренды
+    FINISH_ORDER_MODAL = (By.XPATH, "//div[@class='Order_ModalHeader__3FDaJ']") # завершение бронирования

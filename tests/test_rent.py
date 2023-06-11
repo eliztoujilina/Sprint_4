@@ -1,5 +1,5 @@
-from Sprint_4.pages.main_page import MainPage
-from Sprint_4.pages.rent_page import RentPage
+from pages.main_page import MainPage
+from pages.rent_page import RentPage
 
 
 class TestRent:

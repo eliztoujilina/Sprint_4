@@ -1,11 +1,12 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Sprint_4.locators.rental_page_locators import RentalPageLocators
+from locators.rental_page_locators import RentalPageLocators
 
-from Sprint_4.pages.base_page import BasePage
+from pages.base_page import BasePage
 
 
 class RentPage(BasePage):
@@ -60,6 +61,7 @@ class RentPage(BasePage):
     def watch_status_btn(self):
         return self.browser.find_element(*RentalPageLocators.BUTTON_CHECK_STATUS_POPUP_INFO_WINDOW)
 
+    @allure.step("Заполнить данные пользователя в форме аренды")
     def fill_user_data_form(self, name, last_name, address, subway_station="Черкизовская", phone="+89991234567"):
         self.name_field().send_keys(name)
         self.last_name_field().send_keys(last_name)
@@ -71,6 +73,7 @@ class RentPage(BasePage):
         self.phone_field().send_keys(phone)
         self.next_button_rental_page().click()
 
+    @allure.step("Заполнить данные даты и времени аренды")
     def fill_ditail_form(self, period):
         self.date_input().click()
         self.date_input().send_keys(Keys.ARROW_RIGHT)
@@ -81,9 +84,11 @@ class RentPage(BasePage):
         self.rent_order_btn().click()
         self.yes_confirm_btn().click()
 
+    @allure.step("Проверить что заказ создан")
     def check_order_finish_text(self):
         assert "Заказ оформлен" in self.order_finish_text().text
 
+    @allure.step("Перейти на страницу статуса заказа")
     def click_watch_status_btn(self):
         self.watch_status_btn().click()
 

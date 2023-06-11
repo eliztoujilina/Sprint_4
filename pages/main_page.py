@@ -1,9 +1,10 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Sprint_4.pages.base_page import BasePage
-from Sprint_4.locators.main_page_locators import MainPageLocators
+from pages.base_page import BasePage
+from locators.main_page_locators import MainPageLocators
 
 
 class MainPage(BasePage):
@@ -22,13 +23,15 @@ class MainPage(BasePage):
     def from_body_rent_page_btn(self):
         return self.browser.find_element(*MainPageLocators.MIDDLE_ORDER_BUTTON)
 
+    @allure.step("Проверить текст ответов в аккордеоне на главной")
     def check_questions(self, question: str, answer: str):
         self.scroll_into_view(self.accordion_block())
         self.click_item_in_list(self.accordion_items(), question)
         assert self.answer_item().text == answer
 
+    @allure.step("Нажать на кнопку заказать")
     def open_rent_page(self, from_body=False):
-        from Sprint_4.pages.rent_page import RentPage
+        from pages.rent_page import RentPage
         if from_body:
             self.scroll_into_view(self.from_body_rent_page_btn())
             self.from_body_rent_page_btn().click()

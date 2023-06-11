@@ -6,7 +6,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support import expected_conditions as EC
-from Sprint_4.locators.base_page_locators import BasePageLocators
+from locators.base_page_locators import BasePageLocators
+import allure
 
 
 class BasePage:
@@ -17,15 +18,19 @@ class BasePage:
         self.url = url
         self.browser.implicitly_wait(timeout)
 
+    @allure.step("Открыть страницу: ")
     def open(self):
         self.browser.get(self.url)
 
+    @allure.step("Найти видимый элемент")
     def find_visible_element(self, how, what):
         return WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((how, what)))
 
+    @allure.step("Проскролить к элементу")
     def move_to_element(self, element):
         webdriver.ActionChains(self.browser).move_to_element(element).perform()
 
+    @allure.step("Проскролить к элементу")
     def scroll_into_view(self, element):
         self.browser.execute_script("arguments[0].scrollIntoView();", element)
 
@@ -35,6 +40,7 @@ class BasePage:
     def header_scooter_logo(self):
         return self.browser.find_element(*BasePageLocators.LOGO_SCOOTER)
 
+    @allure.step(f"Кликнуть в элемент в списке")
     def click_item_in_list(self, list_elements, text):
         for element in list_elements:
             if element.text == text:
@@ -44,6 +50,7 @@ class BasePage:
         else:
             raise IndexError(f"Element {text} not exist in list items")
 
+    @allure.step("Проверить что урл равен: ")
     def url_should_have(self, current_url: str, timeout: int = 5):
         time_spend = 0
         for i in range(timeout):
@@ -56,11 +63,13 @@ class BasePage:
                 else:
                     return False
 
+    @allure.step("Перейти на вкладку и проверить что URL dzen")
     def page_should_be_dzen(self):
         self.change_window()
         url = self.browser.current_url
         assert self.url_should_have("dzen.ru")
 
+    @allure.step("Сменить вкладку")
     def change_window(self):
         wait = WebDriverWait(self.browser, 10)
         original_window_handle = self.browser.current_window_handle
